@@ -1,0 +1,80 @@
+.product_slider {
+
+    .prev_arrows {
+        display: block;
+        width: 28px;
+        height: 28px;
+        border-radius: 3px;
+        background: #dddddd;
+        color: #fff;
+        text-align: center;
+        line-height: 30px;
+        border: none;
+        font-size: 0px;
+        position: absolute;
+        top: 50%;
+        margin-top: -80px;
+        left: -40px;
+        transition: .4s;
+        opacity: 0;
+        visibility: hidden;
+
+        &::after {
+            content: "<";
+            font-family: 'BrandonBold';
+            font-size: 10px;
+        }
+
+        &:hover {
+            background: #333333;
+            transition: .4s;
+            cursor: pointer;
+        }
+    }
+
+    &:hover .prev_arrows {
+        left: -0px;
+        opacity: 1;
+        visibility: visible;
+        z-index: 99;
+    }
+
+    .next_arrows {
+        display: block;
+        width: 28px;
+        height: 28px;
+        border-radius: 3px;
+        background: #dddddd;
+        color: #fff;
+        text-align: center;
+        line-height: 30px;
+        border: none;
+        font-size: 0px;
+        position: absolute;
+        top: 50%;
+        margin-top: -80px;
+        right: -40px;
+        transition: .4s;
+        opacity: 0;
+        visibility: hidden;
+
+        &::after {
+            content: ">";
+            font-family: 'BrandonBold';
+            font-size: 10px;
+        }
+
+        &:hover {
+            background: #333333;
+            transition: .4s;
+            cursor: pointer;
+        }
+    }
+
+    &:hover .next_arrows {
+        right: -0px;
+        opacity: 1;
+        visibility: visible;
+        z-index: 99;
+    }
+}
