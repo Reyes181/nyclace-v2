@@ -15,7 +15,7 @@ require('dotenv').config();
 mongoose.set('debug', true);
 mongoose.Promise = global.Promise;
 // mongoose.connect('mongodb://Emii:jericho1994@ds241133.mlab.com:41133/commerce-shop', { useNewUrlParser: true });
-mongoose.connect('mongodb+srv://Emii:jericho1994@commerce-shop.ai4sg.mongodb.net/commerce-shop?retryWrites=true&w=majority', { useNewUrlParser: true })
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })
 
 app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
 app.use(bodyParser.json({limit: "50mb"}));
