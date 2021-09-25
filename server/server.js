@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 const nodemailer = require('nodemailer');
 const Mailgen = require('mailgen');
 const jwt = require('jsonwebtoken');
+const enforce = require('express-sslify');
 require('dotenv').config();
 
 
@@ -27,7 +28,6 @@ cloudinary.config({
     api_key:process.env.CLOUD_API_KEY,
     api_secret:process.env.CLOUD_API_SECRET
 });
-
 
 let transporter = nodemailer.createTransport({
     service: 'Gmail',
@@ -906,6 +906,7 @@ app.get('/service-worker.js', (req, res) => {
 //===========================================
 if(process.env.NODE_ENV === 'production'){
     const path = require('path');
+    app.use(enforce.HTTPS({trustProtoHeader: true}));
     app.get('/*',(req,res)=>{
         sendfile(path.resolve(__dirname,'../client','build','index.html'))
     })
