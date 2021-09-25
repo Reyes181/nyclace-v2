@@ -907,8 +907,8 @@ app.get('/service-worker.js', (req, res) => {
 if(process.env.NODE_ENV === 'production'){
     const path = require('path');
     app.use(enforce.HTTPS({trustProtoHeader: true}));
-    app.get('/*',(req,res)=>{
-        sendfile(path.resolve(__dirname,'../client','build','index.html'))
+    app.get('*',(req,res)=>{
+        sendfile(path.join(__dirname,'../client','build','index.html'))
     })
 }
 
