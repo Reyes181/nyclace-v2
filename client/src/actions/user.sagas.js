@@ -39,7 +39,7 @@ const putSignUp = async (userCredential) => {
 export function* signUp({payload: userCredential}) {
     try {
         const user = yield call(putSignUp, userCredential)
-        yield put(user.success ? signUpSuccess(user.userCredential) : signUpFailure(user.message))
+        yield put(user.success ? signUpSuccess(user) : signUpFailure(user))
     } catch(user) {
         yield put(signUpFailure(user.message))
     }

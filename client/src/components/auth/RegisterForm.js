@@ -3,9 +3,9 @@ import { connect, useDispatch } from 'react-redux';
 import {createStructuredSelector} from 'reselect';
 import { Form, Button, Checkbox, Message, Divider, Grid, Segment } from 'semantic-ui-react';
 import { update, isFormValid, generateData } from '../../utils/FormActions';
-import { emailSignInStart, signUpStart, clearMessage } from '../../actions/userActions';
+import { signUpStart, clearMessage } from '../../actions/userActions';
 import { useHistory } from "react-router-dom";
-import { selectIsLoading, selectCurrentUser, selectSignInError, selectUserLogin, selectError } from '../../actions/user.selectors';
+import { selectIsLoading, selectCurrentUser, selectSignInError, selectError } from '../../actions/user.selectors';
 import {RegisterContainer, ErrorLabel} from '../../styles/js/auth.styles';
 import stateOptions from './stateOptions';
 
@@ -13,7 +13,6 @@ const RegisterForm = (props) => {
     const [checked, setChecked] = useState(true);
     const [formErr, setFormErr] = useState(false);
     const [signUpErrorMessage, setSignUpErrorMessage] = useState('');
-    // const [formSuccess, setFormSuccess] = useState(false);
     const [formData, setFormData] = useState({
         name: {
             value: '',
@@ -116,8 +115,6 @@ const RegisterForm = (props) => {
     const dispatch = useDispatch();
     let currentUser = props.currentUser;
     let signUpError = props.signUpError;
-    let userLogin = props.userLogin;
-    let emailSignInStart = props.emailSignInStart;
     let selectError = props.selectError;
 
     useEffect(() => {
@@ -138,13 +135,6 @@ const RegisterForm = (props) => {
             // eslint-disable-next-line react-hooks/exhaustive-deps
         }
     }, [selectError, dispatch])
-
-    useEffect(() => {
-        if(userLogin !== false){
-            emailSignInStart(userLogin)
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [userLogin])
 
     const handleChange = (e, data) => {
         const newFormdata = update(data, formData, 'register');
@@ -353,13 +343,11 @@ const mapStateToProps = createStructuredSelector({
     currentUser: selectCurrentUser,
     isLoading: selectIsLoading,
     signUpError: selectSignInError,
-    userLogin: selectUserLogin,
     selectError: selectError
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    signUpStart: userCredential => dispatch(signUpStart(userCredential)),
-    emailSignInStart: dataToSubmit => dispatch(emailSignInStart(dataToSubmit))
+    signUpStart: userCredential => dispatch(signUpStart(userCredential))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterForm);

@@ -39,7 +39,7 @@ export const selectSignInError = createSelector(
 
 export const selectUserLogin = createSelector(
     [selectUser],
-    user => user.userLogin
+    user => user.message
 );
 
 export const selectError = createSelector(

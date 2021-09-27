@@ -14,7 +14,6 @@ require('dotenv').config();
 
 mongoose.set('debug', true);
 mongoose.Promise = global.Promise;
-// mongoose.connect('mongodb://Emii:jericho1994@ds241133.mlab.com:41133/commerce-shop', { useNewUrlParser: true });
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })
 
 app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
@@ -60,7 +59,7 @@ const registerEmail = async(username, useremail, user) => {
                     button: {
                         color: '#1a73e8',
                         text: 'Validate Email',
-                        link: `http://localhost:3000/account/verified/${emailToken}`
+                        link: `https://nyclacev2.herokuapp.com/account/verified/${emailToken}`
                     }
                 },
                 outro: 'This is a generated email. Please do not respond to this email. If any question please contact us at by the information provided at our site.'
@@ -147,7 +146,7 @@ const resetPasswordLink = async(useremail, user) => {
                     button: {
                         color: '#1a73e8',
                         text: 'Reset Password',
-                        link: `http://localhost:3000/account/reset_password/${uniqueRoute}/${tokenPass}`
+                        link: `https://nyclacev2.herokuapp.com/account/reset_password/${uniqueRoute}/${tokenPass}`
                     }
                 },
                 outro: 'This is a generated email. Please do not respond to this email. If any question please contact us at by the information provided at our site.'
@@ -232,7 +231,7 @@ const orderEmail = async(username, useremail, transactionOrder) => {
                     button: {
                         color: '#3869d4',
                         text: 'Go to Dashboard',
-                        link: `http://localhost:3000/account/dashboard`
+                        link: `https://nyclacev2.herokuapp.com/account/dashboard`
                     }
                 },
                 outro: 'This is a generated email. Please do not respond to this email. If any question please contact us at by the information provided at our site.'
@@ -302,7 +301,7 @@ app.post('/api/users/register',(req,res) =>{
             registerEmail(doc.name, doc.email, doc);
             return res.status(200).json({
                 success: true,
-                userCredential: {'email': doc.email, 'password': req.body.password}
+                message: 'Email has been sent to verify your account!'
             })
         })
     })
@@ -363,11 +362,10 @@ app.post('/api/users/login',(req,res)=>{
     
     User.findOne({'email': req.body.email},(err,user)=>{
         if(!user) return res.json({loginSuccess:false, message:'Account with this email does not exist.'});
-        
         //check password
         user.comparePassword(req.body.password, (err, isMatch)=>{
             if(!isMatch) return res.json({loginSuccess:false, message:'Wrong password'});
-            
+            if(!user.verified) return res.json({loginSuccess: false, message:'Please verify your account first to login'});
             //generate a token
             user.generateToken((err,user)=>{
                 if(err) return res.status(400).send(err);

@@ -5,7 +5,6 @@ const INITIAL_STATE = {
         isAuth: false,
         cart: []
     },
-    userLogin: false,
     purchasedItems: [{
         porder: '',
         dataOfPurchase: '',
@@ -38,25 +37,40 @@ const userReducer = (state = INITIAL_STATE, action) => {
                     isAuth: false
                 }
             };
+        case UserActionTypes.EMAIL_SIGN_IN_START:
+        case UserActionTypes.LOGOUT_START:
+        case UserActionTypes.USER_ADD_TO_CART_START: 
+        case UserActionTypes.USER_PRODUCT_PURCHASE_BY_CARD_START:
+        case UserActionTypes.CLEAR_PURCHASE_ORDER_START:
+        case UserActionTypes.UPDATE_CART_ITEM_START:
+        case UserActionTypes.UPDATE_ITEM_QTY_START:
+        case UserActionTypes.EDIT_USER_INFO_START:
+            return {
+                ...state,
+                isLoading: true
+            }
+        case UserActionTypes.VERIFIED_EMAIL_START:
+            return {
+                ...state,
+                userVerified: false,
+                isLoading: true,
+                message: null
+            }
+        case UserActionTypes.SEND_RESET_LINK_START:
+        case UserActionTypes.CHANGE_PASSWORD_START:
+        case UserActionTypes.SEND_VERIFY_START:
+            return {
+                ...state,
+                isLoading: true,
+                message: null
+            }
         case UserActionTypes.SIGN_UP_SUCCESS:
             return {
                 ...state, 
                 error: null,
-                userLogin: action.payload,
+                message: action.payload,
                 isLoading: false
             }
-        case UserActionTypes.LOGOUT_START:
-            return {
-                ...state,
-                isLoading: true
-                
-            };
-        case UserActionTypes.EMAIL_SIGN_IN_START:
-            return {
-                ...state,
-                error: null,
-                isLoading: true
-            };
         case UserActionTypes.SIGN_IN_SUCCESS:
             return {
                 ...state,
@@ -70,7 +84,6 @@ const userReducer = (state = INITIAL_STATE, action) => {
         case UserActionTypes.CHECK_USER_SESSION:
             return {
                 ...state,
-                userLogin: false,
                 userVerified: null,
                 message: null,
                 isLoading: true
@@ -91,22 +104,12 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 isLoading: false, 
                 error: null
             }
-        case UserActionTypes.USER_ADD_TO_CART_START: 
-            return {
-                ...state,
-                isLoading: true
-            }
         case UserActionTypes.USER_ADD_TO_CART_SUCCESS:
             return {
                 ...state,
                 isLoading: false,
                 currentUser: action.payload,
                 error: null
-            }
-        case UserActionTypes.USER_PRODUCT_PURCHASE_BY_CARD_START:
-            return {
-                ...state,
-                isLoading: true
             }
         case UserActionTypes.USER_PRODUCT_PURCHASE_BY_CARD_SUCCESS: 
             return {
@@ -120,22 +123,12 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 purchaseSuccess: true,
                 error: null
             }
-        case UserActionTypes.CLEAR_PURCHASE_ORDER_START:
-            return {
-                ...state,
-                isLoading: true
-            }
         case UserActionTypes.CLEAR_PURCHASE_ORDER_SUCCESS:
             return {
                 ...state,
                 isLoading: false,
                 purchasedItems: action.payload,
                 purchaseSuccess: false
-            }
-        case UserActionTypes.UPDATE_CART_ITEM_START:
-            return {
-                ...state,
-                isLoading: true
             }
         case UserActionTypes.UPDATE_CART_ITEM_SUCCESS:
             return {
@@ -146,11 +139,6 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 },
                 isLoading: false
             }
-        case UserActionTypes.UPDATE_ITEM_QTY_START:
-            return {
-                ...state,
-                isLoading: true
-            }
         case UserActionTypes.UPDATE_ITEM_QTY_SUCCESS:
             return {
                 ...state,
@@ -160,24 +148,11 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 },
                 isLoading: false
             }
-        case UserActionTypes.EDIT_USER_INFO_START:
-            return {
-                ...state,
-                isLoading: true
-            }
         case UserActionTypes.EDIT_USER_INFO_SUCCESS:
             return {
                 ...state,
                 isLoading: false,
-                currentUser: action.payload.user,
-                
-            }
-        case UserActionTypes.VERIFIED_EMAIL_START:
-            return {
-                ...state,
-                userVerified: false,
-                isLoading: true,
-                message: null
+                currentUser: action.payload.user
             }
         case UserActionTypes.VERIFIED_EMAIL_SUCCESS:
             return {
@@ -186,59 +161,13 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 isLoading: false,
                 message: action.payload
             }
-        case UserActionTypes.SEND_RESET_LINK_START:
-            return {
-                ...state,
-                message: null,
-                isLoading: true
-            }
+        case UserActionTypes.CHANGE_PASSWORD_SUCCESS:
+        case UserActionTypes.SEND_VERIFY_SUCCESS:
         case UserActionTypes.SEND_RESET_LINK_SUCCESS:
             return {
                 ...state,
                 isLoading: false,
                 message: action.payload
-            }
-        case UserActionTypes.CHANGE_PASSWORD_START:
-            return {
-                ...state,
-                isLoading: true,
-                message: null
-            }
-        case UserActionTypes.CHANGE_PASSWORD_SUCCESS:
-            return {
-                ...state,
-                isLoading: false,
-                message: action.payload
-            }
-        case UserActionTypes.SEND_VERIFY_START:
-            return {
-                ...state,
-                isLoading: true,
-                message: null
-            }
-        case UserActionTypes.SEND_VERIFY_SUCCESS:
-            return {
-                ...state,
-                isLoading: false,
-                message: action.payload
-            }
-        case UserActionTypes.CHANGE_PASSWORD_FAILURE:
-            return {
-                ...state,
-                isLoading: false,
-                message: action.payload
-            }
-        case UserActionTypes.SEND_RESET_LINK_FAILURE:
-            return {
-                ...state,
-                isLoading: false,
-                message: action.payload
-            }
-        case UserActionTypes.SIGN_UP_FAILURE:
-            return {
-                ...state,
-                error: action.payload,
-                isLoading: false
             }
         case UserActionTypes.VERIFIED_EMAIL_FAILURE:
             return {
@@ -248,6 +177,8 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 message: action.payload
             }
         case UserActionTypes.SEND_VERIFY_FAILURE:
+        case UserActionTypes.CHANGE_PASSWORD_FAILURE:
+        case UserActionTypes.SEND_RESET_LINK_FAILURE:
             return {
                 ...state,
                 isLoading: false,
@@ -262,6 +193,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
         case UserActionTypes.UPDATE_CART_ITEM_FAILURE:
         case UserActionTypes.UPDATE_ITEM_QTY_FAILURE:
         case UserActionTypes.EDIT_USER_INFO_FAILURE:
+        case UserActionTypes.SIGN_UP_FAILURE:
             return {
                 ...state,
                 error: action.payload,
