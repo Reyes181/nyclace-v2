@@ -1,5 +1,5 @@
 import React, {useEffect, lazy, Suspense} from 'react';
-import {Switch} from 'react-router-dom';
+import {Switch, Redirect} from 'react-router-dom';
 import {createStructuredSelector} from 'reselect';
 import {connect} from 'react-redux';
 import Layout from './hoc/layout';
@@ -92,6 +92,7 @@ function App({checkUserSession, isUserLoading, currentUser, isPorductFetching, i
           component={HomePageSpinner}
           isLoadingContent={!isProductLoaded}
         />
+        <Redirect from="*" to="/"/>
         </Suspense>
       </Switch>
     </Layout>
